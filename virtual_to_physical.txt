@@ -4,10 +4,19 @@ inline int virtual_to_physical(uint32* page_directory, uint32 virtual_address)
 	// Write your code here, remove the panic and write your code
 	//panic("virtual_to_physical() is not implemented yet...!!");
 	uint32 *page_table = NULL;
+	uint32 entry_page_table;
+	int frameNum;
+	int offset;
 
 	get_page_table(page_directory, virtual_address, &page_table);
 	if(page_table != NULL) {
-		return to_physical_address(get_frame_info(page_directory, virtual_address, &page_table));
+		cprintf("page table found at virtual address: %x\n", page_table);
+
+		entry_page_table = page_table[PTX(virtual_address)];
+		frameNum = entry_page_table >> 12;
+		offset = virtual_address << 20;
+		offset >>= 20;
+		return frameNum*4096;
 	}
 	else {
 		cprintf("page table not found\n");
