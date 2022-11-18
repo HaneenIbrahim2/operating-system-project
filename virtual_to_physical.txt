@@ -1,0 +1,16 @@
+inline int virtual_to_physical(uint32* page_directory, uint32 virtual_address)
+{
+	//TODO: [PROJECT MS2] [PAGING HELPERS] virtual_to_physical
+	// Write your code here, remove the panic and write your code
+	//panic("virtual_to_physical() is not implemented yet...!!");
+	uint32 *page_table = NULL;
+
+	get_page_table(page_directory, virtual_address, &page_table);
+	if(page_table != NULL) {
+		return to_physical_address(get_frame_info(page_directory, virtual_address, &page_table));
+	}
+	else {
+		cprintf("page table not found\n");
+		return -1;
+	}
+}
